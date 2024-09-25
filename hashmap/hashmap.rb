@@ -1,8 +1,23 @@
-#snippet to use whenever accessing buckets:
+#snippet to use whenever accessing buckets through an index:
 #  raise IndexError if index.negative? || index >= @buckets.length
 
 
 class HashMap
+  attr_accessor :bucket
+  def initialize
+    @bucket = Array.new(16) {[]}
+    @size = 0
+  end
+
+  class Node
+      attr_accessor :hash_code, :key, :value, :next_node
+      def initialize(hash_code, key, value, next_node)
+        @hash_code = ""
+        @key = key
+        @value = value
+        @next_node = nil
+      end
+  end
 
   def hash(key)
     hash_code = 0
@@ -10,12 +25,16 @@ class HashMap
        
     key.each_char { |char| hash_code = prime_number * hash_code + char.ord }
        
-    hash_code
+    hash_code % bucket.size
   end
 
   # takes two arguments, the first is a key and the second is a value that is assigned to this key. If a key already exists, then the old value is overwritten or we can say that we update the key’s value
   def set(key, value)
-  
+    
+    index = hash(key)
+    @bucket[index] << [key, value]
+    @size += 1
+    # p @bucket
   end
 
   # takes one argument as a key and returns the value that is assigned to this key. If key is not found, return nil.
@@ -45,7 +64,7 @@ class HashMap
 
   # returns an array containing all the keys inside the hash map.
   def keys
-    
+
   end
 
   # returns an array containing all the values.
@@ -58,3 +77,7 @@ class HashMap
     
   end
 end
+
+test = HashMap.new
+test.set('pig', 'goat')
+p "#{@bucket}"
