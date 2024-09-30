@@ -15,4 +15,4 @@ test.set('jacket', 'blue')
 test.set('kite', 'pink')
 test.set('lion', 'golden')
 
-# test.set('moon', 'silver')
+test.set('moon', 'silver')
