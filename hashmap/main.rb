@@ -1,7 +1,6 @@
 require_relative "hashmap"
 
 test = HashMap.new
-
 test.set('apple', 'red')
 test.set('banana', 'yellow')
 test.set('carrot', 'orange')
@@ -14,5 +13,16 @@ test.set('ice cream', 'white')
 test.set('jacket', 'blue')
 test.set('kite', 'pink')
 test.set('lion', 'golden')
-
 test.set('moon', 'silver')
+p test.entries
+
+test.values
+test.keys
+test.length
+
+test.get("moon")
+test.has?("moon")
+test.has?("sun")
+test.remove("moon")
+
+test.clear

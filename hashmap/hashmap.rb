@@ -29,6 +29,7 @@ class HashMap
     expand if @capacity * @load_factor <= @size
 
     index = hash(key)
+
     @bucket[index].append(key, value)
     @size += 1
     puts "size is now  #{@size}"
@@ -47,11 +48,13 @@ class HashMap
   end
 
   #removes the value from the key.
-  def remove(key)
-    index = hash(key)
-    @bucket[inex].del
-        
-        puts "bucket = #{@bucket[index]}"
+  def remove(match)
+    index = hash(match)
+    
+    @bucket[index].del(match)
+
+    puts "the value of #{match} has been erased"
+    p entries
   end
 
   # returns the number of stored keys in the hash map.
@@ -120,25 +123,4 @@ class HashMap
   end
 end
 
-test = HashMap.new
-test.set('apple', 'red')
-test.set('banana', 'yellow')
-test.set('carrot', 'orange')
-test.set('dog', 'brown')
-test.set('elephant', 'gray')
-test.set('frog', 'green')
-test.set('grape', 'purple')
-test.set('hat', 'black')
-test.set('ice cream', 'white')
-test.set('jacket', 'blue')
-test.set('kite', 'pink')
-test.set('lion', 'golden')
-test.set('moon', 'silver')
-# p test.entries
-# test.values
-# test.keys
-# test.length
-# test.clear
-test.get("moon")
-test.has?("moon")
-test.has?("sun")
+
