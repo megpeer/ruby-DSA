@@ -1,7 +1,7 @@
 require_relative "node"
 
 class Tree
-  attr_accessor :root
+  # attr_accessor :root
   def initialize(array)
     @root = build_tree(array)
   end
@@ -13,9 +13,9 @@ class Tree
   end
 
   def build_tree_recur(left, right, array)
-    return if (left > right) 
+    return if left > right
    
-      mid = left + (right - left / 2)
+      mid = left + ((right - left) / 2)
       root = Node.new(array[mid])
       root.left = build_tree_recur(left, mid - 1, array)
       root.right = build_tree_recur(mid + 1, right, array)
