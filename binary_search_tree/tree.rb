@@ -167,7 +167,28 @@ class Tree
       values
   end
 
+  def height(key, current = @root, count = 1)
+    
+  end
 
+  def depth(key)
+    current = @root
+    count = 1
+    until current.nil?
+      return puts "#{key} is #{count} deep" if current.key == key
+      if current.key > key
+        count += 1
+        current = current.left
+      elsif current.key < key
+        count += 1
+        current = current.right
+      end
+    end 
+  end
+
+      
+
+   
 
   # do not adjsut below line
 #----------------------------------------------
@@ -183,15 +204,18 @@ test = Tree.new([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324])
 # test.insert(11111)
 # test.insert (10)
 test.pretty_print
-puts "level order traversal"
-test.level_order
+# puts "level order traversal"
+# test.level_order
 # test.level_order.each {|x| puts "#{x}"}
-puts "inorder traversal:"
-puts "[1, 3, 4, 5, 7, 8, 9, 23, 67, 324, 6345]"
-p test.inorder
-puts "preorder traversal:"
-puts"[8, 4, 1, 3, 5, 7, 67, 9, 23, 324, 6345]"
-p test.preorder
-puts "postorder traversal:"
-puts "[3, 1, 7, 5, 4, 23, 9, 6345, 324, 67, 8]"
-p test.postorder
+# puts "inorder traversal:"
+# puts "[1, 3, 4, 5, 7, 8, 9, 23, 67, 324, 6345]"
+# p test.inorder
+# puts "preorder traversal:"
+# puts"[8, 4, 1, 3, 5, 7, 67, 9, 23, 324, 6345]"
+# p test.preorder
+# puts "postorder traversal:"
+# puts "[3, 1, 7, 5, 4, 23, 9, 6345, 324, 67, 8]"
+# p test.postorder
+puts test.depth(8)
+puts test.depth(23)
+p test.height(4)
