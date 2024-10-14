@@ -134,28 +134,37 @@ class Tree
     end
     p arr unless block_given?
   end
+  # def inorder
+  #   arr = []
+  #   inorder_recur {|key| arr << key}
+  #   p arr
+  # end
 
-  def inorder(current = @root)
+  def inorder(current = @root, arr = [])
       return if current.nil?
-        inorder(current.left)
-       p "#{current.key}" 
-        inorder(current.right)
+      values = arr
+        inorder(current.left, values)
+        values << current.key
+        inorder(current.right, values)
+        values
   end
 
-  def preorder(current = @root)
+  def preorder(current = @root, arr = [])
     return if current.nil?
-    p "#{current.key}"
-    inorder(current.left)
-    inorder(current.right)
+    values = arr
+      values << current.key
+      preorder(current.left, values)
+      preorder(current.right, values)
+      values
   end
 
-  def postorder(current = @root)
+  def postorder(current = @root, arr = [])
     return if current.nil?
-    
-    inorder(current.left)
-    inorder(current.right)
-    p "#{current.key}"
-    
+    values = arr
+      postorder(current.left, values)
+      postorder(current.right, values)
+      values << current.key
+      values
   end
 
 
@@ -178,8 +187,11 @@ puts "level order traversal"
 test.level_order
 # test.level_order.each {|x| puts "#{x}"}
 puts "inorder traversal:"
-test.inorder
+puts "[1, 3, 4, 5, 7, 8, 9, 23, 67, 324, 6345]"
+p test.inorder
 puts "preorder traversal:"
-test.preorder
+puts"[8, 4, 1, 3, 5, 7, 67, 9, 23, 324, 6345]"
+p test.preorder
 puts "postorder traversal:"
-test.postorder
+puts "[3, 1, 7, 5, 4, 23, 9, 6345, 324, 67, 8]"
+p test.postorder
