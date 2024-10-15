@@ -1,13 +1,14 @@
 require_relative "node"
 
 class Tree
-  # attr_accessor :root
+  attr_accessor :root
   def initialize(array)
     @root = build_tree(array)
   end
 
   def build_tree(array)
     sorted = array.sort.uniq
+    p sorted
     length = sorted.length
     build_tree_recur(0, length - 1, sorted)
   end
@@ -43,37 +44,6 @@ class Tree
     end
   end
 
-  # def delete(key, current = @root)
-  #   ##IF current node's key == input key
-  #   if current.key == key
-  #     #return if left and right are nil (leaf node)
-  #     return if current.left.nil? && current.right.nil?
-  #     #store the current node in a temp variable
-  #     temp = current
-  #       #until temp node has nil to the left, keep going left then return the right
-  #       if temp.left.nil?
-  #         temp = temp.right
-  #         return temp if temp.left.nil?
-  #         temp = temp.left until temp.left.nil?
-  #       else
-  #       #
-  #         temp = temp.left
-  #         return temp if temp.right.nil?
-  #         temp = temp.right until temp.right.nil?
-  #       end
-      
-  #     delete(temp.key, @root)
-  #     current.key = temp.key
-
-  #   ##IF root is bigger than key   
-  #   elsif current.key > key
-  #     current.left = delete(key, current.left)
-  #   ##IF root is less than key
-  #   else
-  #     current.right = delete(key, current.right)
-  #   end
-  # current
-  # end
   
   def get_successor(current)
     current = current.right
@@ -96,8 +66,6 @@ class Tree
     elsif current.right == nil
       return current.left
     end
-
-    #when both children are present
       succ = get_successor(current)
       current.key = succ.key
       current.right = delete(succ.key, current.right)
@@ -134,11 +102,6 @@ class Tree
     end
     p arr unless block_given?
   end
-  # def inorder
-  #   arr = []
-  #   inorder_recur {|key| arr << key}
-  #   p arr
-  # end
 
   def inorder(current = @root, arr = [])
       return if current.nil?
@@ -167,9 +130,28 @@ class Tree
       values
   end
 
-  def height(key, current = @root, count = 1)
+  def height(key)
+    current = find(key)
     
+    return calculate_height(current)
+    # puts "#{key} is #{calculate_height(current)} high "
   end
+
+  def calculate_height(current)
+    return if current.nil?
+    return 1 if current.left == nil && current.right == nil
+
+    left = current.left.nil? ? 0 : calculate_height(current.left)
+    right = current.right.nil? ? 0 : calculate_height(current.right)
+    
+    return 1 + if left > right
+      left
+    else
+      right
+    end
+  end
+
+
 
   def depth(key)
     current = @root
@@ -186,6 +168,18 @@ class Tree
     end 
   end
 
+  def balanced?(current = @root)
+      left = height(current.left.key)
+      right = height(current.right.key)
+      differential = left - right
+      differential.between?(-1, 1)
+  end
+
+  def rebalance
+    new_array = inorder
+    # p new_array
+    @root = self.build_tree(new_array)
+  end
       
 
    
@@ -198,24 +192,3 @@ class Tree
     pretty_print(node.left, "#{prefix}#{is_left ? '    ' : '│   '}", true) if node.left
   end
 end
-
-test = Tree.new([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324])
-# # test.pretty_print
-# test.insert(11111)
-# test.insert (10)
-test.pretty_print
-# puts "level order traversal"
-# test.level_order
-# test.level_order.each {|x| puts "#{x}"}
-# puts "inorder traversal:"
-# puts "[1, 3, 4, 5, 7, 8, 9, 23, 67, 324, 6345]"
-# p test.inorder
-# puts "preorder traversal:"
-# puts"[8, 4, 1, 3, 5, 7, 67, 9, 23, 324, 6345]"
-# p test.preorder
-# puts "postorder traversal:"
-# puts "[3, 1, 7, 5, 4, 23, 9, 6345, 324, 67, 8]"
-# p test.postorder
-puts test.depth(8)
-puts test.depth(23)
-p test.height(4)
