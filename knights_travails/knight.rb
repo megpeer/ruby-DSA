@@ -1,49 +1,44 @@
+
 class Board
 
   def initialize(origin, destination)
     @row = [0, 1, 2, 3, 4, 5, 6, 7]
     @col = [0, 1, 2, 3, 4, 5, 6, 7]
     @board = @row.product(@col)
-    @path = []
+    @data = [[origin, origin, 0]]
     @origin = origin
     @destination = destination
+    @move_count = 0
     puts "the knight travails! from #{@origin} to #{@destination}!"
-    
     travails
-
   end
 
   def travails      
     q = [@origin]
     current = []
-      until current == @destination
+      until q.empty?
       current = q.shift
-      @path.append(current)
-      check_dest(current)
-      adj_positions = moves(current)
-      adj_positions.each do |move| 
+      moves(current).each do |move|
+        check_dest(move, current) 
+      # @data.append([move, current, @move_count])
       @board.delete(move)
       q.append(move)
+      
       end
-    end
+      end
   end
 
-  def check_dest(current)    
-    if current == @destination
+  def check_dest(move, current)  
+    @data.append([move, current])  
+    if move == @destination
       puts "the knight has reached its destination!"
-      puts "number of moves: #{@path.length - 1}"
-      puts "the following moves were taken:"
-      # p @board
-      puts ""
-      p @path
+  
+      backtrack
         return 
-      end
     end
   end
 
   def moves(current)
-
-    
     start_x = current[0]
     start_y = current[1]
     
@@ -60,15 +55,29 @@ class Board
       move8 = [start_x - 1, start_y - 2]
 
       [move1, move2, move3, move4, move5, move6, move7, move8].select do |(x, y)|
-        x.between?(0, 7) && y.between?(0, 7) && @board.include?([x, y])
-      end 
+        # x.between?(0, 7) && y.between?(0, 7) && 
+        @board.include?([x, y])
+      end
+    end
 
-
-
+  def backtrack
+    step = nil
+    last = @data.pop
+    path = []
+    move_count = 1
+    until last[0] == @origin
+      path.append(last[0])
+      step = last[1]
+      last = last_gasp(step)
+      move_count += 1
+    end
+    path.append(@origin)
+      puts "number of moves: #{move_count}"
+  puts "the following moves were taken:"
+  p path.reverse
   end
 
-
-
-
-test = Board.new([3, 3], [4, 3])
-# test.travails([3, 3], [4, 3])
+  def last_gasp(step)
+    @data.find{|el| el[0] == step}    
+  end
+end
